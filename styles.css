@@ -66,13 +66,26 @@ body {
     background-color: transparent;
     text-align: center;
     border-bottom: 2px solid #000;
-    background-image: url('img/P_CPERO.png');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    overflow: hidden;
     min-height: 100vh;
     min-height: 100svh;
     position: relative;
+    z-index: 1;
+}
+
+.hero-bg-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100svh;
+    object-fit: cover;
+    object-position: center;
+    z-index: -1;
+    pointer-events: none;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
 }
 
 .hero-text {
@@ -111,6 +124,7 @@ body {
     height: 100vh;
     height: 100svh;
     display: block;
+    z-index: 1;
 }
 
 .hotspot {
@@ -212,6 +226,8 @@ body {
     padding: 4rem 2rem;
     background-color: #f9f9f9;
     border-bottom: 2px solid #000;
+    position: relative;
+    z-index: 2;
 }
 
 .about h2 {
@@ -233,6 +249,8 @@ body {
     padding: 2rem 2rem;
     background-color: transparent;
     border-bottom: 2px solid #000;
+    position: relative;
+    z-index: 2;
 }
 
 .projects h2 {
@@ -294,6 +312,8 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 500px;
+    position: relative;
+    z-index: 2;
 }
 
 .contact .container {
@@ -323,6 +343,8 @@ body {
     padding: 2rem;
     text-align: center;
     font-weight: 500;
+    position: relative;
+    z-index: 2;
 }
 
 img {
@@ -333,6 +355,7 @@ img {
 /* Responsive */
 @media (max-width: 768px) {
     body {
+        background-image: none;
         background-attachment: scroll;
         font-size: 15px;
     }
@@ -344,6 +367,11 @@ img {
     .hero {
         min-height: 100vh;
         min-height: 100svh;
+    }
+
+    .hero-bg-image {
+        position: absolute;
+        height: 100%;
     }
 
     .image-map-container {
@@ -400,6 +428,15 @@ img {
     body,
     .hero {
         background-attachment: scroll;
+    }
+
+    body {
+        background-image: none;
+    }
+
+    .hero-bg-image {
+        position: absolute;
+        height: 100%;
     }
 }
 
@@ -583,6 +620,8 @@ img {
 .last {
     padding: 4rem 2rem;
     background: linear-gradient(to bottom, #ffffff 0%, #000000 70%);
+    position: relative;
+    z-index: 2;
 }
 .about {
     padding: 4rem 2rem;

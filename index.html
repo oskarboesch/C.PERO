@@ -11,6 +11,7 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
+            <img class="hero-bg-image" src="img/P_CPERO.png" alt="" aria-hidden="true">
             <div class="image-map-container" >
                 <div class="hero-text">
                     <h1>C.PERO</h1>
@@ -343,11 +344,10 @@ dessinée au numérique afin d’agrandir mon panel de techniques.</p>
         const HERO_BACKGROUND_SRC = 'img/P_CPERO.png';
         const HERO_MOBILE_BREAKPOINT = 768;
         const HERO_FOCUS_POINT_DESKTOP = { x: 0.30, y: 0.37 };
-        const HERO_FOCUS_POINT_MOBILE = { x: 0.40, y: 0.40 };
+        const HERO_FOCUS_POINT_MOBILE = { x: 0.5, y: 0.40 };
         const HERO_TEXT_ANCHOR_DESKTOP = { x: 0.5, y: 0.5 };
         const HERO_TEXT_ANCHOR_MOBILE = { x: 0.5, y: 0.62 };
-        const heroBackgroundImage = new Image();
-        heroBackgroundImage.src = HERO_BACKGROUND_SRC;
+        const heroBackgroundImage = document.querySelector('.hero-bg-image');
 
         function placeHeroTextOnBackgroundLine() {
             const hero = document.querySelector('.hero');
@@ -385,11 +385,41 @@ dessinée au numérique afin d’agrandir mon panel de techniques.</p>
             heroText.style.top = `${textY - (textHeight * textAnchor.y)}px`;
         }
 
+        function updateHeroParallax() {
+            const hero = document.querySelector('.hero');
+            if (!hero || !heroBackgroundImage) return;
+
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const isMobile = window.matchMedia(`(max-width: ${HERO_MOBILE_BREAKPOINT}px)`).matches;
+
+            if (prefersReducedMotion || isMobile) {
+                heroBackgroundImage.style.transform = 'translate3d(0, 0, 0)';
+                return;
+            }
+
+            const scrollY = window.pageYOffset || window.scrollY || 0;
+            const heroHeight = hero.offsetHeight;
+
+            // Apply parallax while hero section is visible
+            if (scrollY < heroHeight) {
+                // Move background at 50% of scroll speed for parallax effect
+                const offsetY = scrollY * 0.5;
+                heroBackgroundImage.style.transform = `translate3d(0, ${offsetY}px, 0)`;
+            } else {
+                // Hero scrolled past, keep background at final position
+                heroBackgroundImage.style.transform = `translate3d(0, ${heroHeight * 0.5}px, 0)`;
+            }
+        }
+
         function initHeroTextPlacement() {
             if (heroBackgroundImage.complete && heroBackgroundImage.naturalWidth) {
                 placeHeroTextOnBackgroundLine();
+                updateHeroParallax();
             } else {
-                heroBackgroundImage.onload = placeHeroTextOnBackgroundLine;
+                heroBackgroundImage.onload = () => {
+                    placeHeroTextOnBackgroundLine();
+                    updateHeroParallax();
+                };
             }
         }
 
@@ -398,16 +428,23 @@ dessinée au numérique afin d’agrandir mon panel de techniques.</p>
             initHeroTextPlacement();
         }
 
+        window.addEventListener('scroll', () => {
+            window.requestAnimationFrame(updateHeroParallax);
+        }, { passive: true });
+
         window.addEventListener('resize', () => {
             window.requestAnimationFrame(placeHeroTextOnBackgroundLine);
+            window.requestAnimationFrame(updateHeroParallax);
         });
 
         window.addEventListener('orientationchange', () => {
             window.requestAnimationFrame(placeHeroTextOnBackgroundLine);
+            window.requestAnimationFrame(updateHeroParallax);
         });
 
         window.addEventListener('load', () => {
             window.requestAnimationFrame(placeHeroTextOnBackgroundLine);
+            window.requestAnimationFrame(updateHeroParallax);
         });
 
         if (window.visualViewport) {
