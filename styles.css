@@ -80,7 +80,7 @@ body {
     z-index: -1;
     pointer-events: none;
     transform: translate3d(0, 0, 0);
-    will-change: transform;
+    will-change: auto;
 }
 
 .hero-text {
@@ -223,6 +223,8 @@ body {
     border-bottom: 2px solid #000;
     position: relative;
     z-index: 2;
+    contain: layout style paint;
+    will-change: contents;
 }
 
 .about h2 {
@@ -245,8 +247,8 @@ body {
     background-color: transparent;
     border-bottom: 2px solid #000;
     position: relative;
-    z-index: 2;
-}
+    z-index: 2;    contain: layout style paint;
+    will-change: contents;}
 
 .projects h2 {
     font-size: 2.5rem;
@@ -309,6 +311,7 @@ body {
     min-height: 500px;
     position: relative;
     z-index: 2;
+    contain: layout style paint;
 }
 
 .contact .container {
@@ -362,23 +365,9 @@ img {
         min-height: 100svh;
     }
 
-    .hero-bg-image {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        transform: none !important;
-    }
-
     .image-map-container {
         height: 100vh;
         height: 100svh;
-    }
-
-    .hero-text {
-        top: 45%;
-        left: 50%;
     }
 
     .hero h1 {
@@ -420,15 +409,11 @@ img {
     }
 }
 
-/* iOS Safari: fixed backgrounds are unreliable and can fail to render */
+/* iOS Safari: Use fixed with transform for parallax compatibility */
 @supports (-webkit-touch-callout: none) {
     .hero-bg-image {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        transform: none !important;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
     }
 }
 
@@ -478,7 +463,7 @@ img {
 
 .thumbnail.active {
     border-color: #000;
-    border-width: 10px;
+    border-width: 2px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 1);
 }
 
@@ -614,6 +599,7 @@ img {
     background: linear-gradient(to bottom, #ffffff 0%, #000000 70%);
     position: relative;
     z-index: 2;
+    contain: layout style paint;
 }
 .about {
     padding: 4rem 2rem;

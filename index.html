@@ -6,6 +6,17 @@
     <title>Clara Portfolio</title>
     <link rel="stylesheet" href="fonts/Chillax/css/chillax.css">
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Preload fonts to prevent text rendering delays -->
+    <link rel="preload" as="font" href="fonts/Chillax/fonts/Chillax-Variable.woff2" type="font/woff2" crossorigin>
+    <link rel="preload" as="font" href="fonts/Chillax/fonts/Chillax-Variable.woff" type="font/woff" crossorigin>
+    
+    <!-- Preload critical images to prevent loading delays -->
+    <link rel="preload" as="image" href="img/P_CPERO.png">
+    <link rel="preload" as="image" href="img/TPV/TPV0.jpeg">
+    <link rel="preload" as="image" href="img/the Beautiful Greenlady.jpeg">
+    <link rel="preload" as="image" href="img/speedrome/SPEEDROME 17.jpeg">
+    <link rel="preload" as="image" href="img/EMMA 2.jpeg">
 </head>
 <body>
 
@@ -386,29 +397,9 @@ dessinée au numérique afin d’agrandir mon panel de techniques.</p>
         }
 
         function updateHeroParallax() {
-            const hero = document.querySelector('.hero');
-            if (!hero || !heroBackgroundImage) return;
-
-            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            const isMobile = window.matchMedia(`(max-width: ${HERO_MOBILE_BREAKPOINT}px)`).matches;
-
-            if (prefersReducedMotion || isMobile) {
-                heroBackgroundImage.style.transform = 'translate3d(0, 0, 0)';
-                return;
-            }
-
-            const scrollY = window.pageYOffset || window.scrollY || 0;
-            const heroHeight = hero.offsetHeight;
-
-            // Apply parallax while hero section is visible
-            if (scrollY < heroHeight) {
-                // Move background at 50% of scroll speed for parallax effect
-                const offsetY = scrollY * 0.5;
-                heroBackgroundImage.style.transform = `translate3d(0, ${offsetY}px, 0)`;
-            } else {
-                // Hero scrolled past, keep background at final position
-                heroBackgroundImage.style.transform = `translate3d(0, ${heroHeight * 0.5}px, 0)`;
-            }
+            // Background stays fixed, no parallax movement
+            if (!heroBackgroundImage) return;
+            heroBackgroundImage.style.transform = 'translate3d(0, 0, 0)';
         }
 
         function initHeroTextPlacement() {
