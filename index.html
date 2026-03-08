@@ -343,7 +343,7 @@ dessinée au numérique afin d’agrandir mon panel de techniques.</p>
         const HERO_BACKGROUND_SRC = 'img/P_CPERO.png';
         const HERO_MOBILE_BREAKPOINT = 768;
         const HERO_FOCUS_POINT_DESKTOP = { x: 0.30, y: 0.37 };
-        const HERO_FOCUS_POINT_MOBILE = { x: 0.30, y: 0.40 };
+        const HERO_FOCUS_POINT_MOBILE = { x: 0.40, y: 0.40 };
         const HERO_TEXT_ANCHOR_DESKTOP = { x: 0.5, y: 0.5 };
         const HERO_TEXT_ANCHOR_MOBILE = { x: 0.5, y: 0.62 };
         const heroBackgroundImage = new Image();
@@ -351,12 +351,16 @@ dessinée au numérique afin d’agrandir mon panel de techniques.</p>
 
         function placeHeroTextOnBackgroundLine() {
             const hero = document.querySelector('.hero');
+            const heroMap = document.querySelector('.image-map-container');
             const heroText = document.querySelector('.hero-text');
 
-            if (!hero || !heroText || !heroBackgroundImage.naturalWidth) return;
+            if (!hero || !heroMap || !heroText || !heroBackgroundImage.naturalWidth) return;
 
-            const heroWidth = hero.clientWidth;
-            const heroHeight = hero.clientHeight;
+            const heroWidth = heroMap.clientWidth;
+            const heroHeight = heroMap.clientHeight;
+
+            if (!heroWidth || !heroHeight) return;
+
             const imageWidth = heroBackgroundImage.naturalWidth;
             const imageHeight = heroBackgroundImage.naturalHeight;
 
@@ -401,6 +405,22 @@ dessinée au numérique afin d’agrandir mon panel de techniques.</p>
         window.addEventListener('orientationchange', () => {
             window.requestAnimationFrame(placeHeroTextOnBackgroundLine);
         });
+
+        window.addEventListener('load', () => {
+            window.requestAnimationFrame(placeHeroTextOnBackgroundLine);
+        });
+
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', () => {
+                window.requestAnimationFrame(placeHeroTextOnBackgroundLine);
+            });
+        }
+
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(() => {
+                window.requestAnimationFrame(placeHeroTextOnBackgroundLine);
+            });
+        }
 
         document.addEventListener('DOMContentLoaded', initPage);
     </script>
