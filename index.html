@@ -349,6 +349,12 @@ dessinée au numérique afin d’agrandir mon panel de techniques.</p>
 
             gallery.addEventListener('scroll', updateActiveDot);
             updateActiveDot(); // Initial call
+
+            // Hide arrow when scrolling starts
+            const hideScrollArrow = () => {
+                gallery.style.setProperty('--arrow-opacity', '0');
+            };
+            gallery.addEventListener('scroll', hideScrollArrow, { once: true });
         }
 
         // Keep the hero title pinned to a precise line in the cover background image.
