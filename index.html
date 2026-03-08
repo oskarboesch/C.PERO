@@ -40,7 +40,7 @@ décoratifs dans lesquels je cache des messages plus profonds.
 J’associe par exemple les étoiles avec l’innocence et elles sont
 d’ordinaire pas symétriques afin d’apporter du dynamisme et d’évoquer
 que l’innocence se perd vite en grandissant surtout dans le monde
-­ actuel « moralivore » .Un autre élément important dans ma démarches
+ actuel «moralivore» .Un autre élément important dans ma démarches
 artistique est la couleur. Je l’utilise parfois de manière symbolique
 et parfois décorative, mais essentiellement pour créer une sorte
 d’eﬀet de trop plein. Cet excès d’informations dans la composition
@@ -50,10 +50,9 @@ Enfin je porte une grande attention à ce que l’observateur-trice soit libre
 d’interprétation, je ne désire pas dans mon art guider le public
 à une interprétation malgré qu’elle soit mienne. Chacun-e trouve en
 soi ce qu’iels veulent voir dans mes oeuvres. Je suis toujours ouverte
-à la discussion et au partage. Dans les prochaines années j’aime-
-rais encore plus clarifier ma démarche artistique, expérimenter des
+à la discussion et au partage. Dans les prochaines années j’aimerais encore plus clarifier ma démarche artistique, expérimenter des
 nouvelles techniques et acquérir de nouvelles connaissances.</p>
-            <h2 style="text-align: right;">Aristique</h2>
+            <h2 style="text-align: right;">Artistique</h2>
         </div>
     </section>
 
@@ -341,11 +340,70 @@ dessinée au numérique afin d’agrandir mon panel de techniques.</p>
             updateActiveDot(); // Initial call
         }
 
-        // Initialize dots when page loads
-        document.addEventListener('DOMContentLoaded', initScrollDots);
+        // Keep the hero title pinned to a precise line in the cover background image.
+        const HERO_BACKGROUND_SRC = 'img/P_CPERO.png';
+        const HERO_MOBILE_BREAKPOINT = 768;
+        const HERO_FOCUS_POINT_DESKTOP = { x: 0.30, y: 0.37 };
+        const HERO_FOCUS_POINT_MOBILE = { x: 0.30, y: 0.40 };
+        const HERO_TEXT_ANCHOR_DESKTOP = { x: 0.5, y: 0.5 };
+        const HERO_TEXT_ANCHOR_MOBILE = { x: 0.5, y: 0.62 };
+        const heroBackgroundImage = new Image();
+        heroBackgroundImage.src = HERO_BACKGROUND_SRC;
 
-        // Initialize dots when page loads
-        document.addEventListener('DOMContentLoaded', initScrollDots);
+        function placeHeroTextOnBackgroundLine() {
+            const hero = document.querySelector('.hero');
+            const heroText = document.querySelector('.hero-text');
+
+            if (!hero || !heroText || !heroBackgroundImage.naturalWidth) return;
+
+            const heroWidth = hero.clientWidth;
+            const heroHeight = hero.clientHeight;
+            const imageWidth = heroBackgroundImage.naturalWidth;
+            const imageHeight = heroBackgroundImage.naturalHeight;
+
+            const scale = Math.max(heroWidth / imageWidth, heroHeight / imageHeight);
+            const renderedWidth = imageWidth * scale;
+            const renderedHeight = imageHeight * scale;
+            const offsetX = (heroWidth - renderedWidth) / 2;
+            const offsetY = (heroHeight - renderedHeight) / 2;
+
+            const isMobile = window.matchMedia(`(max-width: ${HERO_MOBILE_BREAKPOINT}px)`).matches;
+            const focusPoint = isMobile ? HERO_FOCUS_POINT_MOBILE : HERO_FOCUS_POINT_DESKTOP;
+            const textAnchor = isMobile ? HERO_TEXT_ANCHOR_MOBILE : HERO_TEXT_ANCHOR_DESKTOP;
+
+            const textX = offsetX + (focusPoint.x * renderedWidth);
+            const textY = offsetY + (focusPoint.y * renderedHeight);
+
+            const textWidth = heroText.offsetWidth;
+            const textHeight = heroText.offsetHeight;
+
+            heroText.style.transform = 'translate(0, 0)';
+            heroText.style.left = `${textX - (textWidth * textAnchor.x)}px`;
+            heroText.style.top = `${textY - (textHeight * textAnchor.y)}px`;
+        }
+
+        function initHeroTextPlacement() {
+            if (heroBackgroundImage.complete && heroBackgroundImage.naturalWidth) {
+                placeHeroTextOnBackgroundLine();
+            } else {
+                heroBackgroundImage.onload = placeHeroTextOnBackgroundLine;
+            }
+        }
+
+        function initPage() {
+            initScrollDots();
+            initHeroTextPlacement();
+        }
+
+        window.addEventListener('resize', () => {
+            window.requestAnimationFrame(placeHeroTextOnBackgroundLine);
+        });
+
+        window.addEventListener('orientationchange', () => {
+            window.requestAnimationFrame(placeHeroTextOnBackgroundLine);
+        });
+
+        document.addEventListener('DOMContentLoaded', initPage);
     </script>
 </body>
 </html>

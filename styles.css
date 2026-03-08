@@ -323,19 +323,49 @@ body {
     font-weight: 500;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
+    body {
+        background-attachment: scroll;
+        font-size: 15px;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+
+    .hero {
+        min-height: 72vh;
+    }
+
+    .hero-text {
+        top: 45%;
+        left: 50%;
+    }
+
     .hero h1 {
-        font-size: 2.5rem;
+        font-size: clamp(2.2rem, 12vw, 3.4rem);
     }
 
     .hero p {
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
 
     .nav-links {
         gap: 1rem;
         font-size: 0.9rem;
+    }
+
+    .about,
+    .projects,
+    .last,
+    .contact {
+        padding: 2.25rem 1rem;
     }
 
     .projects-grid {
@@ -344,8 +374,16 @@ body {
 
     .about h2,
     .projects h2,
-    .contact h2 {
-        font-size: 2rem;
+    .contact h2,
+    .last h2 {
+        font-size: 1.7rem;
+        margin-bottom: 1rem;
+    }
+
+    .about p,
+    .last p {
+        font-size: 0.95rem;
+        line-height: 1.65;
     }
 }
 
@@ -453,12 +491,18 @@ body {
 
 /* Responsive pour la galerie scroll */
 @media (max-width: 768px) {
+    .horizontal-scroll-gallery {
+        gap: 1rem;
+        padding: 8px 0;
+    }
+
     .scroll-item {
-        flex: 0 0 180px;
+        flex: 0 0 72vw;
     }
     
     .scroll-item img {
-        height: 180px;
+        width: 100%;
+        height: auto;
     }
     
     .caption {
@@ -470,6 +514,7 @@ body {
 @media (max-width: 768px) {
     .gallery-container {
         flex-direction: column;
+        gap: 1rem;
     }
     
     .main-image-container {
@@ -478,8 +523,14 @@ body {
     
     .thumbnail-grid {
         flex: 1;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         max-height: 300px;
+        gap: 8px;
+        padding: 4px;
+    }
+
+    .thumbnail.active {
+        border-width: 4px;
     }
 }
 
@@ -541,7 +592,31 @@ body {
 /* Responsive pour speedrome grid */
 @media (max-width: 768px) {
     .speedrome-grid {
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 15px;
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .speedrome-item {
+        aspect-ratio: auto;
+    }
+
+    .speedrome-item:hover {
+        transform: none;
+        z-index: 1;
+        box-shadow: none;
+    }
+
+    .contact {
+        min-height: 240px;
+    }
+
+    .email-logo {
+        font-size: 4rem;
+    }
+
+    .last .container > img {
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-top: 16px !important;
     }
 }
